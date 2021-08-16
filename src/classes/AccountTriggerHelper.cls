@@ -3,8 +3,13 @@ global with sharing class AccountTriggerHelper {
 
     private static List<Id> accs = new List<Id>();
 
-    global static void beforeInsertAccount(){ //Map<Id, Account> newAcc
-        AccountTriggerHandler.logic(/*accIds*/);
+    global static void beforeInsertAccount(List<Account> newA, List<Account> oldA){ //Map<Id, Account> newAcc
+        for(Account a : newA) {
+            if(!oldA.contains(a)){
+                accs.add(a.Id);
+            }
+        }
+        AccountTriggerHandler.logic(accs);
     }
 
     global static void beforeUpdateAccount(List<Account> newA, List<Account> oldA){
